@@ -44,6 +44,12 @@ void liberarHash(Hash* hash) {
     }
 }
 
+// Por ser uma função auxiliar de hashTable, recebe esse 'static' só para limitar o uso dele nesse arquivo
+static int hashing(int chave, int TABLE_SIZE) {
+    return chave % TABLE_SIZE;
+}
+
+
 int insertHash_EnderAberto(Hash *hash, Aluno aluno) {
     if (hash == NULL || hash->qtd == hash->TABLE_SIZE ) {
         return 0;
@@ -51,8 +57,32 @@ int insertHash_EnderAberto(Hash *hash, Aluno aluno) {
 
     int chave = aluno.matricula;
     
-    int i, pos, newPos;
-    pos = chaveMod(chave, hash->TABLE_SIZE);
-
+    int pos;
+    pos = hashing(chave, hash->TABLE_SIZE);
     
+    int inicio = pos;
+
+    // Sondagem Linear 
+    while (hash->itens[pos] != NULL) {
+        pos = (pos + 1) % hash->TABLE_SIZE;
+
+        // Caso a matrícula já esteja na hash
+        if (hash->itens[pos]->matricula == chave) {
+            printf("Aluno já matrículado!\n");
+            return 0;
+        }
+
+        // Caso já tenha dado a volta completa no array
+        if (pos == inicio) {
+            printf("Sem espaço para novas matrículas\n");
+            return 0;
+        }
+    }
+
+    Aluno* alunoNovo = (Aluno*)malloc(sizeof(Aluno));
+    if (alunoNovo == NULL) return 0;
+
+    hash->itens[pos] = alunoNovo;
+    hash->qtd++;
+    return 1;
 }
