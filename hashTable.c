@@ -64,13 +64,13 @@ int insertHash_EnderAberto(Hash *hash, Aluno aluno) {
 
     // Sondagem Linear 
     while (hash->itens[pos] != NULL) {
-        pos = (pos + 1) % hash->TABLE_SIZE;
-
         // Caso a matrícula já esteja na hash
         if (hash->itens[pos]->matricula == chave) {
             printf("Aluno já matrículado!\n");
             return 0;
         }
+
+        pos = (pos + 1) % hash->TABLE_SIZE; // quando chegar no final da tabela, volta para o inicio
 
         // Caso já tenha dado a volta completa no array
         if (pos == inicio) {
@@ -79,8 +79,11 @@ int insertHash_EnderAberto(Hash *hash, Aluno aluno) {
         }
     }
 
+    // Realiza a cópia do aluno inserido para um novo espaço de memória.
     Aluno* alunoNovo = (Aluno*)malloc(sizeof(Aluno));
     if (alunoNovo == NULL) return 0;
+
+    *alunoNovo = aluno;
 
     hash->itens[pos] = alunoNovo;
     hash->qtd++;
