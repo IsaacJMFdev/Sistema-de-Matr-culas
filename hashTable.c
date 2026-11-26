@@ -49,7 +49,6 @@ static int hashing(int chave, int TABLE_SIZE) {
     return chave % TABLE_SIZE;
 }
 
-
 int insertHash_EnderAberto(Hash *hash, Aluno aluno) {
     if (hash == NULL || hash->qtd == hash->TABLE_SIZE ) {
         return 0;
@@ -88,4 +87,29 @@ int insertHash_EnderAberto(Hash *hash, Aluno aluno) {
     hash->itens[pos] = alunoNovo;
     hash->qtd++;
     return 1;
+}
+
+int buscaHash_EnderAberto(Hash *hash, int matricula, Aluno *alunoBuscado) {
+    int chave = matricula;
+    int pos = hashing(chave, hash->TABLE_SIZE);
+    int inicio = pos;
+
+    while (hash->itens[pos] != NULL) {
+        // Encontrou
+        if (hash->itens[pos]->matricula == matricula) {
+            *alunoBuscado = *(hash->itens[pos]);
+            return 1;
+        }
+
+        // Passa posição
+        pos = (pos + 1) % hash->TABLE_SIZE;
+
+        // Voltou ao início
+        if (pos == inicio) {
+            printf("Aluno não encontrado.\n");
+            return 0;
+        }
+    }
+    
+    return 0;
 }
