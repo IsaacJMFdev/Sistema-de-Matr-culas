@@ -107,6 +107,8 @@ void trancarMatricula(ArvBin* arvoreMatriculas) {
     printf("Digite a matrícula que deseja trancar: ");
     scanf("%d", &matricula);
 
+    limparTela();
+
     if (remove_ArvBin(arvoreMatriculas, matricula)) {
         printf("Matrículas [%d] trancada com sucesso.\n", matricula);
         return;
@@ -151,6 +153,7 @@ int main(){
 
             case 0:
                 limparTela();
+                freeAll(tabelaAlunos, arvoreMatriculas);
                 printf("Fechando programa...\n");
                 break;
             

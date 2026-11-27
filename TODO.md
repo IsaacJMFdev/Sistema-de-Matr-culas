@@ -22,3 +22,4 @@
 ## Funcionalidades Desejáveis
 - [x] Limpar Tela
 - [ ] Tratamento de Resposta do Usuário
+- [ ] Status Matrícula em `consultarAluno`
