@@ -88,3 +88,61 @@ int insere_ArvBin(ArvBin* raiz, int matricula) {
     }
     return 1;
 }
+
+static struct NO* removeAtual(struct NO* atual) {
+    struct NO *no1, *no2;
+
+    if (atual->esq == NULL) {
+        no2 = atual->dir;
+        free(atual);
+        return no2;
+    }
+
+    no1 = atual;
+    no2 = atual->esq;
+
+    while (no2->dir != NULL) {
+        no1 = no2;
+        no2 = no2->dir;
+    }
+
+    if (no1 != NULL) {
+        no1->dir = no2->esq;
+        no2->esq = atual->esq;
+    }
+
+    no2->dir = atual->dir;
+    free(atual);
+    return no2;
+}
+
+int remove_ArvBin(ArvBin *raiz, int matricula) {
+    if (raiz == NULL) return 0; // raiz não foi criada
+    struct NO* ant = NULL;
+    struct NO* atual = *raiz;
+
+    while (atual != NULL) {
+        if (matricula == atual->matricula) {
+            if (atual == *raiz) {
+                *raiz = removeAtual(atual);
+            }
+            else {
+                if (ant->dir == atual) {
+                    ant->dir = removeAtual(atual);
+                }
+                else {
+                    ant->esq = removeAtual(atual);
+                }
+            }
+            return 1;
+        }
+        ant = atual;
+        if (matricula > atual->matricula) {
+            atual = atual->dir;
+        }
+        else {
+            atual = atual->esq;
+        }
+    }
+    return 0;
+}
