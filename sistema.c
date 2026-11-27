@@ -7,6 +7,7 @@
 
 #define TABLE_SIZE 11
 
+
 void lerOpcao(int* pointerOpcao) {
     int opcao;
     printf("|Digite a opção: ");
@@ -32,34 +33,34 @@ void menu(int* pointerOpcao) {
 
 void limparTela() {
     #ifdef _WIN32
-        system("cls");
+    system("cls");
     #else
-        system("clear");
+    system("clear");
     #endif
 }
 
 void cadastroAluno(Hash* tabelaAlunos, ArvBin* arvoreMatriculas) {
     Aluno alunoNovo;
-
+    
     printf("Matrícula do aluno: ");
     scanf("%d", &alunoNovo.matricula);
     getchar();
-
+    
     printf("Nome do aluno: ");
     fgets(alunoNovo.nome, sizeof(alunoNovo.nome), stdin);
     alunoNovo.nome[strcspn(alunoNovo.nome, "\n")] = '\0';
-
+    
     printf("Nota 1: ");
     scanf("%f", &alunoNovo.nota1);
-
+    
     printf("Nota 2: ");
     scanf("%f", &alunoNovo.nota2);
-
+    
     printf("Nota 3: ");
     scanf("%f", &alunoNovo.nota3);
-
+    
     limparTela();
-
+    
     if(insertHash_EnderAberto(tabelaAlunos, alunoNovo) && insere_ArvBin(arvoreMatriculas, alunoNovo.matricula)) {
         printf("Aluno cadastrado com sucesso.\n");
     }
@@ -71,10 +72,10 @@ void cadastroAluno(Hash* tabelaAlunos, ArvBin* arvoreMatriculas) {
 void consultaAluno(Hash* tabelaAlunos) {
     Aluno alunoBuscado;
     int matriculaBuscada;
-
+    
     printf("Digite a matríucla do aluno que busca: ");
     scanf("%d", &matriculaBuscada);
-
+    
     if(buscaHash_EnderAberto(tabelaAlunos, matriculaBuscada, &alunoBuscado)) {
         limparTela();
         printf("|ALUNO ENCONTRADO:\n");
@@ -95,6 +96,11 @@ void listarMatriculasAtivas(ArvBin* arvoreMatriculas) {
     printf("|Matrículas ativas: ");
     emOrdem(arvoreMatriculas);
     printf("\n------------------------------\n");
+}
+
+void freeAll(Hash* tabelaAlunos, ArvBin*arvoreMatriculas) {
+    liberarHash(tabelaAlunos);
+    libera_ArvBin(arvoreMatriculas);
 }
 
 int main(){
@@ -118,7 +124,9 @@ int main(){
             case 3:
                 listarMatriculasAtivas(arvoreMatriculas);
                 break;
-            
+
+            case 4:
+                
             case 0:
                 limparTela();
                 printf("Fechando programa...\n");
