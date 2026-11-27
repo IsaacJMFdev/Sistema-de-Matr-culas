@@ -38,7 +38,7 @@ void limparTela() {
     #endif
 }
 
-void cadastroAluno(Hash* tabelaAlunos) {
+void cadastroAluno(Hash* tabelaAlunos, ArvBin* arvoreMatriculas) {
     Aluno alunoNovo;
 
     printf("Matrícula do aluno: ");
@@ -60,7 +60,7 @@ void cadastroAluno(Hash* tabelaAlunos) {
 
     limparTela();
 
-    if(insertHash_EnderAberto(tabelaAlunos, alunoNovo)) {
+    if(insertHash_EnderAberto(tabelaAlunos, alunoNovo) && insere_ArvBin(arvoreMatriculas, alunoNovo.matricula)) {
         printf("Aluno cadastrado com sucesso.\n");
     }
     else {
@@ -90,6 +90,13 @@ void consultaAluno(Hash* tabelaAlunos) {
     }
 }
 
+void listarMatriculasAtivas(ArvBin* arvoreMatriculas) {
+    limparTela();
+    printf("|Matrículas ativas: ");
+    emOrdem(arvoreMatriculas);
+    printf("\n------------------------------\n");
+}
+
 int main(){
     Hash* tabelaAlunos = inicializarHash(TABLE_SIZE);
     ArvBin* arvoreMatriculas = cria_ArvBin();
@@ -101,13 +108,17 @@ int main(){
         menu(pointerOpcao);
         switch (opcao) {
             case 1:
-                cadastroAluno(tabelaAlunos);
+                cadastroAluno(tabelaAlunos, arvoreMatriculas);
                 break;
 
             case 2:
                 consultaAluno(tabelaAlunos);
                 break;
 
+            case 3:
+                listarMatriculasAtivas(arvoreMatriculas);
+                break;
+            
             case 0:
                 limparTela();
                 printf("Fechando programa...\n");
