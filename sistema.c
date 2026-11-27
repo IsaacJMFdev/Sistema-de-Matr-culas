@@ -39,6 +39,7 @@ void limparTela() {
     #endif
 }
 
+// 1.
 void cadastroAluno(Hash* tabelaAlunos, ArvBin* arvoreMatriculas) {
     Aluno alunoNovo;
     
@@ -69,6 +70,7 @@ void cadastroAluno(Hash* tabelaAlunos, ArvBin* arvoreMatriculas) {
     }
 }
 
+// 2.
 void consultaAluno(Hash* tabelaAlunos) {
     Aluno alunoBuscado;
     int matriculaBuscada;
@@ -91,6 +93,7 @@ void consultaAluno(Hash* tabelaAlunos) {
     }
 }
 
+// 3.
 void listarMatriculasAtivas(ArvBin* arvoreMatriculas) {
     limparTela();
     printf("|Matrículas ativas: ");
@@ -98,6 +101,23 @@ void listarMatriculasAtivas(ArvBin* arvoreMatriculas) {
     printf("\n------------------------------\n");
 }
 
+// 4.
+void trancarMatricula(ArvBin* arvoreMatriculas) {
+    int matricula;
+    printf("Digite a matrícula que deseja trancar: ");
+    scanf("%d", &matricula);
+
+    if (remove_ArvBin(arvoreMatriculas, matricula)) {
+        printf("Matrículas [%d] trancada com sucesso.\n", matricula);
+        return;
+    }
+    else {
+        printf("Não foi possível realizar o trancamento da matrícula [%d].\n", matricula);
+        return;
+    }
+}
+
+// 0.
 void freeAll(Hash* tabelaAlunos, ArvBin*arvoreMatriculas) {
     liberarHash(tabelaAlunos);
     libera_ArvBin(arvoreMatriculas);
@@ -126,7 +146,9 @@ int main(){
                 break;
 
             case 4:
-                
+                trancarMatricula(arvoreMatriculas);
+                break;
+
             case 0:
                 limparTela();
                 printf("Fechando programa...\n");
