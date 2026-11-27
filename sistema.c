@@ -3,6 +3,7 @@
 #include <string.h>
 #include "aluno.h"
 #include "hashTable.h"
+#include "arvoreBinaria.h"
 
 #define TABLE_SIZE 11
 
@@ -65,7 +66,6 @@ void cadastroAluno(Hash* tabelaAlunos) {
     else {
         printf("O cadastro de aluno falhou.\n");
     }
-
 }
 
 void consultaAluno(Hash* tabelaAlunos) {
@@ -92,6 +92,8 @@ void consultaAluno(Hash* tabelaAlunos) {
 
 int main(){
     Hash* tabelaAlunos = inicializarHash(TABLE_SIZE);
+    ArvBin* arvoreMatriculas = cria_ArvBin();
+
     int opcao;
     int* pointerOpcao = &opcao;
 
@@ -114,6 +116,7 @@ int main(){
             default:
                 limparTela();
                 printf("Opção Inválida, digite novamente.\n");
+                break;
         }
 
     } while (opcao != 0);
