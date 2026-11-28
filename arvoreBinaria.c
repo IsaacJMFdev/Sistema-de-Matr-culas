@@ -146,3 +146,20 @@ int remove_ArvBin(ArvBin *raiz, int matricula) {
     }
     return 0;
 }
+
+int consulta_ArvBin(ArvBin* raiz, int matricula) {
+    if (raiz == NULL) return 0;
+
+    struct NO* atual = *raiz;
+    while (atual != NULL) {
+        if (matricula == atual->matricula) return 1; // Matrícula encontrada
+
+        if (matricula > atual->matricula) {
+            atual = atual->dir;
+        }
+        else {
+            atual = atual->esq;
+        }
+    }
+    return 0;
+}

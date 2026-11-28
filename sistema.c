@@ -4,9 +4,9 @@
 #include "aluno.h"
 #include "hashTable.h"
 #include "arvoreBinaria.h"
+#include "filaDin.h"
 
 #define TABLE_SIZE 11
-
 
 void lerOpcao(int* pointerOpcao) {
     int opcao;
@@ -110,7 +110,7 @@ void trancarMatricula(ArvBin* arvoreMatriculas) {
     limparTela();
 
     if (remove_ArvBin(arvoreMatriculas, matricula)) {
-        printf("Matrículas [%d] trancada com sucesso.\n", matricula);
+        printf("Matrícula [%d] trancada com sucesso.\n", matricula);
         return;
     }
     else {
@@ -119,15 +119,49 @@ void trancarMatricula(ArvBin* arvoreMatriculas) {
     }
 }
 
+// 5.
+void chegadaParaAtendimento(Fila* filaAlunosAtendimento, ArvBin* arvoreMatriculas, Hash* tabelaAlunos) {
+    int matricula;
+    Aluno* alunoBuscado;
+
+    printf("Digite a matrícula para efetuar o atendimento: ");
+    scanf("%d", &matricula);
+
+    limparTela();
+
+    // Procura o aluno na árvore
+    if (consulta_ArvBin(arvoreMatriculas, matricula)) {
+        // Procura o aluno na hash
+        if (buscaHash_EnderAberto(tabelaAlunos, matricula, alunoBuscado)) {
+            // Se tudo ocorreu certo, insere na fila
+            if(insereFila(filaAlunosAtendimento, *alunoBuscado)) {
+                printf("Aluno registrado na fila de atendimento regular.\n");
+            }
+            else {
+                printf("Não foi possível inserir o aluno na fila de atendimento regular.\n");
+            }
+        }
+        else {
+            printf("Aluno não cadastrado.\n");
+        }
+    }
+    else {
+        printf("Aluno não cadastrado ou com matrícula não ativa.\n");
+        return;
+    }
+}
+
 // 0.
-void freeAll(Hash* tabelaAlunos, ArvBin*arvoreMatriculas) {
+void freeAll(Hash* tabelaAlunos, ArvBin*arvoreMatriculas, Fila* filaAlunosAtendimento) {
     liberarHash(tabelaAlunos);
     libera_ArvBin(arvoreMatriculas);
+    liberaFila(filaAlunosAtendimento);
 }
 
 int main(){
     Hash* tabelaAlunos = inicializarHash(TABLE_SIZE);
     ArvBin* arvoreMatriculas = cria_ArvBin();
+    Fila* filaAlunosAtendimento = criaFila();
 
     int opcao;
     int* pointerOpcao = &opcao;
@@ -151,9 +185,13 @@ int main(){
                 trancarMatricula(arvoreMatriculas);
                 break;
 
+            case 5:
+                chegadaParaAtendimento(filaAlunosAtendimento, arvoreMatriculas, tabelaAlunos);
+                break;
+
             case 0:
                 limparTela();
-                freeAll(tabelaAlunos, arvoreMatriculas);
+                freeAll(tabelaAlunos, arvoreMatriculas, filaAlunosAtendimento);
                 printf("Fechando programa...\n");
                 break;
             

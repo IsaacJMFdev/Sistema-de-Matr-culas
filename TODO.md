@@ -2,7 +2,7 @@
 ## Estruturas Obrigatórias
 - [x] **Hash table:** para registro de alunos (matricula, nome e notas)
 - [x] **Árvore Binária de Busca:** para tomar conta de matrículas ativas
-- [ ] **Fila Dinâmica Encadeada:** para cuidar de atendimentos por ordem de chegada (fila normal)
+- [x] **Fila Dinâmica Encadeada:** para cuidar de atendimentos por ordem de chegada (fila normal)
 - [ ] **Fila de Prioridade:** para cuidar de atendimntos urgentes
 - [ ] **Pilha Dinâmica Encadeada:** para cuidar de requerimentos despachados
 - [ ] **Lista Dinâmica Duplamente Encadeada:** para cuidar de atendimentos concluídos
