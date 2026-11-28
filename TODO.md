@@ -12,7 +12,7 @@
 - [x] 2. *Consultar aluno*
 - [x] 3. *Listar matrículas ativas*
 - [x] 4. *Trancar matrícula*
-- [ ] 5. *Chegada para atendimento*
+- [x] 5. *Chegada para atendimento*
 - [ ] 6. *Registrar urgência*
 - [ ] 7. *Atender o próximo*
 - [ ] 8. *Despachar requerimento*
