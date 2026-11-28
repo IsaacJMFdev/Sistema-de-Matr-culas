@@ -5,6 +5,7 @@
 #include "hashTable.h"
 #include "arvoreBinaria.h"
 #include "filaDin.h"
+#include "filaPrioridade.h"
 
 #define TABLE_SIZE 11
 
@@ -120,11 +121,11 @@ void trancarMatricula(ArvBin* arvoreMatriculas) {
 }
 
 // 5.
-void chegadaParaAtendimento(Fila* filaAlunosAtendimento, ArvBin* arvoreMatriculas, Hash* tabelaAlunos) {
+void chegadaParaAtendimento(Fila* filaAlunos, ArvBin* arvoreMatriculas, Hash* tabelaAlunos) {
     int matricula;
-    Aluno* alunoBuscado;
+    Aluno alunoBuscado;
 
-    printf("Digite a matrícula para efetuar o atendimento: ");
+    printf("Digite a matrícula para registrar na fila: ");
     scanf("%d", &matricula);
 
     limparTela();
@@ -132,9 +133,9 @@ void chegadaParaAtendimento(Fila* filaAlunosAtendimento, ArvBin* arvoreMatricula
     // Procura o aluno na árvore
     if (consulta_ArvBin(arvoreMatriculas, matricula)) {
         // Procura o aluno na hash
-        if (buscaHash_EnderAberto(tabelaAlunos, matricula, alunoBuscado)) {
+        if (buscaHash_EnderAberto(tabelaAlunos, matricula, &alunoBuscado)) {
             // Se tudo ocorreu certo, insere na fila
-            if(insereFila(filaAlunosAtendimento, *alunoBuscado)) {
+            if(insereFila(filaAlunos, alunoBuscado)) {
                 printf("Aluno registrado na fila de atendimento regular.\n");
             }
             else {
@@ -151,17 +152,54 @@ void chegadaParaAtendimento(Fila* filaAlunosAtendimento, ArvBin* arvoreMatricula
     }
 }
 
+// 6.
+void registrarUrgencia(FilaPrio* filaAlunosPrio, ArvBin* arvoreMatriculas, Hash* tabelaAlunos) {
+    int matricula, prioridade;
+    Aluno alunoBuscado;
+
+    printf("Digite a matrícula para registrar na fila: ");
+    scanf("%d", &matricula);
+
+    printf("Digite a prioridade do aluno: ");
+    scanf("%d", &prioridade);
+
+    limparTela();
+
+    if(consulta_ArvBin(arvoreMatriculas, matricula)) {
+        if(buscaHash_EnderAberto(tabelaAlunos, matricula, &alunoBuscado)) {
+            if(insere_FilaPrio(filaAlunosPrio, alunoBuscado.nome, prioridade)) {
+                printf("Aluno %s adicionado na fila com prioridade %d.\n", alunoBuscado.nome, prioridade);
+                return;
+            }
+            else {
+                printf("Não foi possível adicionar o aluno na fila com prioridade.\n");
+                return;
+            }
+        }
+        else {
+            printf("Aluno não registrado.\n");
+            return;
+        }
+    }
+    else {
+        printf("Aluno não cadastrado ou com matrícula não ativa.\n");
+        return;
+    }
+}
+
 // 0.
-void freeAll(Hash* tabelaAlunos, ArvBin*arvoreMatriculas, Fila* filaAlunosAtendimento) {
+void freeAll(Hash* tabelaAlunos, ArvBin*arvoreMatriculas, Fila* filaAlunos, FilaPrio* filaAlunosPrio) {
     liberarHash(tabelaAlunos);
     libera_ArvBin(arvoreMatriculas);
-    liberaFila(filaAlunosAtendimento);
+    liberaFila(filaAlunos);
+    libera_FilaPrio(filaAlunosPrio);
 }
 
 int main(){
     Hash* tabelaAlunos = inicializarHash(TABLE_SIZE);
     ArvBin* arvoreMatriculas = cria_ArvBin();
-    Fila* filaAlunosAtendimento = criaFila();
+    Fila* filaAlunos = criaFila();
+    FilaPrio* filaAlunosPrio = cria_FilaPrio();
 
     int opcao;
     int* pointerOpcao = &opcao;
@@ -186,12 +224,16 @@ int main(){
                 break;
 
             case 5:
-                chegadaParaAtendimento(filaAlunosAtendimento, arvoreMatriculas, tabelaAlunos);
+                chegadaParaAtendimento(filaAlunos, arvoreMatriculas, tabelaAlunos);
+                break;
+
+            case 6:
+                registrarUrgencia(filaAlunosPrio, arvoreMatriculas, tabelaAlunos);
                 break;
 
             case 0:
                 limparTela();
-                freeAll(tabelaAlunos, arvoreMatriculas, filaAlunosAtendimento);
+                freeAll(tabelaAlunos, arvoreMatriculas, filaAlunos, filaAlunosPrio);
                 printf("Fechando programa...\n");
                 break;
             

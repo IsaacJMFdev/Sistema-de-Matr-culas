@@ -81,7 +81,7 @@ int removeFila(Fila *fila) {
     }
 
     ElementoFila* no = fila->inicio;
-    fila->inicio = fila->final;
+    fila->inicio = fila->final->proximo;
     free(no);
 
     if (filaVazia(fila)) {
